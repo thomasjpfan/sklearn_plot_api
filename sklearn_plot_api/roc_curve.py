@@ -1,5 +1,4 @@
 from sklearn.metrics import roc_curve
-import matplotlib.pyplot as plt
 
 
 class RocCurveVisualizer:
@@ -32,16 +31,19 @@ class RocCurveVisualizer:
 
     response_method : 'predict_proba' or 'decision_function' optional \
     (default='predict_proba')
-        Method to call estimator to get target scores
+        Method to call estimator to get target scores.
+
+    label : str or None, optional (default=None)
+        Label for roc curve.
 
     Attributes
     ----------
     fpr_ : ndarray
-        False positive rate.
+        False positive rate
     tpr_ : ndarray
-        True positive rate.
+        True positive rate
     label_ : string
-        Name of estimator.
+        Label for estimator
     line_ : matplotlib Artist
         ROC Curve.
     ax_ : matplotlib Axes
@@ -58,7 +60,8 @@ class RocCurveVisualizer:
                  pos_label=None,
                  sample_weight=None,
                  drop_intermediate=True,
-                 response_method="predict_proba"):
+                 response_method="predict_proba",
+                 label=None):
         """Computes and stores values needed for visualization"""
 
         prediction_method = getattr(estimator, response_method)
@@ -75,7 +78,11 @@ class RocCurveVisualizer:
 
         self.fpr_ = fpr
         self.tpr_ = tpr
-        self.label_ = estimator.__class__.__name__
+
+        if label is None:
+            self.label_ = estimator.__class__.__name__
+        else:
+            self.label_ = label
 
     def plot(self, ax=None):
         """Plot visualization
@@ -107,6 +114,7 @@ def plot_roc_curve(estimator,
                    sample_weight=None,
                    drop_intermediate=True,
                    response_method="predict_proba",
+                   label=None,
                    ax=None):
     """Plot Receiver operating characteristic (ROC) curve
 
@@ -142,6 +150,9 @@ def plot_roc_curve(estimator,
     response_method : 'predict_proba' or 'decision_function' optional \
     (default='predict_proba')
         Method to call estimator to get target scores
+
+    label : str or None, optional (default=None)
+        Label for roc curve.
 
     ax : matplotlib axes, optional (default=None)
         axes object to plot on
