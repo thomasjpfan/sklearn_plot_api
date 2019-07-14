@@ -26,6 +26,8 @@ class PartialDependenceViz:
         if ax is None:
             fig = plt.figure()
             ax = fig.add_subplot()
+        else:
+            fig = ax.figure
 
         pd_results_ = self.pd_results_
         n_features = len(pd_results_)
